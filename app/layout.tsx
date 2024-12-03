@@ -1,27 +1,36 @@
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
 
 import Header from "./component/header";
+import Loader from "./component/Loader";
 
 export const metadata: Metadata = {
-	title: "HireableJS",
-	description: "A zone for all despreate JavaScript developers",
+  title: "HireableJS",
+  description: "A zone for all desperate JavaScript developers",
 };
 
-export default async function RootLayout({
-	children,
+export default function RootLayout({
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<ClerkProvider>
-			<html lang="en">
-				<body>
-					<Header />
-					<main>{children}</main>
-				</body>
-			</html>
-		</ClerkProvider>
-	);
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <Header />
+          <main>
+            <ClerkLoading>
+              <Loader />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <Header />
+              {children}
+            </ClerkLoaded>
+          </main>
+        </body>
+      </html>
+    </ClerkProvider>
+  );
 }
