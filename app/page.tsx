@@ -1,8 +1,26 @@
 "use client";
 import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { BASE_URL } from "./constants";
+
+async function getUserCount() {
+	const res = await axios.get(`${BASE_URL}/users`);
+	return res.data;
+}
 
 export default function Home() {
 	const { user } = useUser();
+
+	const { data, isSuccess } = useQuery({
+		queryKey: ["users"],
+		queryFn: getUserCount,
+	});
+
+	if (isSuccess) {
+		console.log(data);
+	}
+
 	return (
 		<div className="flex flex-col justify-center items-center h-screen">
 			<h1 className=" text-6xl">HireableJS</h1>
@@ -17,6 +35,9 @@ export default function Home() {
 					Hi <span className=" font-bold text-xl">{user?.firstName}</span>
 				</h1>
 				<p>You have joind the waiting list successfully</p>
+				{isSuccess && (
+					<p>{`Until now ${data.length} javascript developers have joined the community`}</p>
+				)}
 				<p>You will be notified in the near future when the website is launched</p>
 			</SignedIn>
 		</div>
