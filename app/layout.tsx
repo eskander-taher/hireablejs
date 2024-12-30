@@ -1,4 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react"
+
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -16,6 +18,7 @@ export default async function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
+			<Analytics />
 			<html lang="en">
 				<body>
 					<Header />
