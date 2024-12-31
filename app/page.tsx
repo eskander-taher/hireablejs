@@ -1,5 +1,5 @@
 "use client";
-import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/clerk-react";
+import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
