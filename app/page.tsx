@@ -18,18 +18,18 @@ export default function Home() {
 		queryFn: getUserCount,
 	});
 
-	const { data: profile, isSuccess: profileSuccess } = useQuery({
-		queryKey: ["profile"],
-		queryFn: async () => {
-			const token = await getToken();
-			const url = `${BASE_URL}/profile/${userId}`;
-			const res = await axios.get(url, {
-				headers: { Authorization: `Bearer ${token}` },
-			});
-			return res.data;
-		},
-		enabled: !!userId,
-	});
+	// const { data: profile, isSuccess: profileSuccess } = useQuery({
+	// 	queryKey: ["profile"],
+	// 	queryFn: async () => {
+	// 		const token = await getToken();
+	// 		const url = `${BASE_URL}/profile/${userId}`;
+	// 		const res = await axios.get(url, {
+	// 			headers: { Authorization: `Bearer ${token}` },
+	// 		});
+	// 		return res.data;
+	// 	},
+	// 	enabled: !!userId,
+	// });
 
 	return (
 		<div className="flex flex-col justify-center items-center h-screen">
