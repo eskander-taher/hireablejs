@@ -15,10 +15,8 @@ async function postResume({ clerkId, resume }: { clerkId: string; resume: string
 }
 
 function ResumeForm() {
-	const { userId: clerkId, isLoaded } = useAuth();
-	if (!isLoaded) return <p>Loading...</p>;
 	const [resume, setResume] = useState("");
-
+	const { userId: clerkId, isLoaded } = useAuth();
 	const { mutate } = useMutation({
 		mutationFn: postResume,
 		onSuccess: () => {
@@ -28,8 +26,11 @@ function ResumeForm() {
 			alert("failed to post resume");
 		},
 	});
+	if (!isLoaded) return <p>Loading...</p>;
 
-	function handleSubmit(e: any) {
+	
+
+	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		if (clerkId) {
 			mutate({ clerkId, resume });
