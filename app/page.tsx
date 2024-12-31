@@ -1,5 +1,5 @@
 "use client";
-import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/clerk-react";
+import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
@@ -11,15 +11,25 @@ async function getUserCount() {
 
 export default function Home() {
 	const { user } = useUser();
+	const { getToken, userId } = useAuth();
 
-	const { data, isSuccess } = useQuery({
+	const { data: count, isSuccess } = useQuery({
 		queryKey: ["users"],
 		queryFn: getUserCount,
 	});
 
-	if (isSuccess) {
-		console.log(data);
-	}
+	const { data: profile, isSuccess: profileSuccess } = useQuery({
+		queryKey: ["profile"],
+		queryFn: async () => {
+			const token = await getToken();
+			const url = `${BASE_URL}/profile/${userId}`;
+			const res = await axios.get(url, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			return res.data;
+		},
+		enabled: !!userId,
+	});
 
 	return (
 		<div className="flex flex-col justify-center items-center h-screen">
@@ -36,7 +46,7 @@ export default function Home() {
 				</h1>
 				<p>You have joind the waiting list successfully</p>
 				{isSuccess && (
-					<p>{`Until now ${data.length} javascript developers have joined the community`}</p>
+					<p>{`Until now ${count} JavaScript developers have joined the community`}</p>
 				)}
 				<p>You will be notified in the near future when the website is launched</p>
 			</SignedIn>
