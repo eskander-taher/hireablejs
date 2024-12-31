@@ -1,22 +1,57 @@
 "use client";
-import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/clerk-react";
+import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/clerk-react";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
+import { useState } from "react";
 
-async function getUserCount() {
+async function getUsers() {
 	const res = await axios.get(`${BASE_URL}/users`);
 	return res.data;
+}
+async function postResume({ clerkId, resume }: { clerkId: string; resume: string }) {
+	const res = await axios.post(`${BASE_URL}/resume`, { clerkId, resume });
+	return res.data;
+}
+
+function ResumeForm() {
+	const { userId: clerkId, isLoaded } = useAuth();
+	if (!isLoaded) return <p>Loading...</p>;
+	const [resume, setResume] = useState("");
+
+	const { mutate } = useMutation({
+		mutationFn: postResume,
+		onSuccess: () => {
+			alert("resume was posted successfully");
+		},
+		onError: () => {
+			alert("failed to post resume");
+		},
+	});
+
+	function handleSubmit(e: any) {
+		e.preventDefault();
+		if (clerkId) {
+			mutate({ clerkId, resume });
+		}
+	}
+
+	return (
+		<form onSubmit={handleSubmit}>
+			<textarea value={resume} onChange={(e) => setResume(e.target.value)} />
+			<input type="submit" />
+		</form>
+	);
 }
 
 export default function Home() {
 	const { user } = useUser();
-	
-	const { data: count, isSuccess } = useQuery({
+
+	const { data: users, isSuccess } = useQuery({
 		queryKey: ["users"],
-		queryFn: getUserCount,
+		queryFn: getUsers,
 	});
-	
+
 	// const { getToken, userId } = useAuth();
 	// const { data: profile, isSuccess: profileSuccess } = useQuery({
 	// 	queryKey: ["profile"],
@@ -46,9 +81,10 @@ export default function Home() {
 				</h1>
 				<p>You have joind the waiting list successfully</p>
 				{isSuccess && (
-					<p>{`Until now ${count} JavaScript developers have joined the community`}</p>
+					<p>{`Until now ${users.length} JavaScript developers have joined the community`}</p>
 				)}
 				<p>You will be notified in the near future when the website is launched</p>
+				<ResumeForm />
 			</SignedIn>
 		</div>
 	);
