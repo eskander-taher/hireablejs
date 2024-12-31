@@ -11,13 +11,13 @@ async function getUserCount() {
 
 export default function Home() {
 	const { user } = useUser();
-	const { getToken, userId } = useAuth();
-
+	
 	const { data: count, isSuccess } = useQuery({
 		queryKey: ["users"],
 		queryFn: getUserCount,
 	});
-
+	
+	// const { getToken, userId } = useAuth();
 	// const { data: profile, isSuccess: profileSuccess } = useQuery({
 	// 	queryKey: ["profile"],
 	// 	queryFn: async () => {
