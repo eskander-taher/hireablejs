@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { BASE_URL } from "@/constants";
 import Loader from "@/app/components/Loader";
+import CustomCoverLetter from "./CustomCoverLetter";
 
 async function getUser(userId: string) {
 	const res = await axios.get(`${BASE_URL}/users/${userId}`);
@@ -15,11 +16,19 @@ async function getUser(userId: string) {
 export default function Profile() {
 	const { userId, isLoaded } = useAuth();
 
-	const { data: user, isLoading } = useQuery({
+	const {
+		data: user,
+		isLoading,
+		isError,
+	} = useQuery({
 		queryKey: ["users", userId],
 		queryFn: async () => getUser(userId!),
 		enabled: !!userId,
 	});
+
+	if (isError) {
+		return <h1>Server for some reason could not load this :(</h1>;
+	}
 
 	if (!isLoaded || isLoading) {
 		return <Loader />;
@@ -33,6 +42,7 @@ export default function Profile() {
 					Right now the tools are being developed, whenever a new tool is launched you
 					will be the first to know about.
 				</p>
+				<CustomCoverLetter />
 			</div>
 		);
 	}
