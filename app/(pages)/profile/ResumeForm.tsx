@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "@/app/constants";
 import { toast } from "react-toastify";
+import Button from "@/app/component/ui/Button";
 
 async function postResume({ clerkId, resume }: { clerkId: string; resume: string }) {
 	const res = await axios.post(`${BASE_URL}/resume`, { clerkId, resume });
@@ -15,7 +16,7 @@ function ResumeForm() {
 	const [resume, setResume] = useState("");
 	const { userId: clerkId, isLoaded } = useAuth();
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: postResume,
 		onSuccess: () => {
 			toast.success("Resume was saved successfully");
@@ -37,13 +38,14 @@ function ResumeForm() {
 	return (
 		<form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
 			<textarea
+				required
 				cols={60}
 				placeholder="Copy paste your resume here"
 				className="text-black p-2"
 				value={resume}
 				onChange={(e) => setResume(e.target.value)}
 			/>
-			<button type="submit">Save resume</button>
+			<Button type="submit" isLoading={isPending} text="Save resume" />
 		</form>
 	);
 }
