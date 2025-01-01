@@ -25,11 +25,21 @@ export default function Profile() {
 		return <Loader />;
 	}
 
+	function Tools() {
+		return (
+			<div className="flex flex-col justify-center items-center">
+				<h1>Strat using the tools.</h1>
+				<p>
+					Right now the tools are being developed, whenever a new tool is launched you
+					will be the first to know about.
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className="h-screen flex flex-col justify-center items-center">
-			<ProtectContent>
-				{!user?.resume ? <ResumeForm /> : <h1>Strat using the tools.</h1>}
-			</ProtectContent>
+			<ProtectContent>{!user?.resume ? <ResumeForm /> : <Tools />}</ProtectContent>
 		</div>
 	);
 }
