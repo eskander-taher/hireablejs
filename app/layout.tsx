@@ -1,6 +1,9 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react"
 import ReactQueryClientProvider from "./component/ReactQueryClientProvider";
+import { ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
+import Loader from "./component/Loader";
+import ToastProvider from "./component/ToastProvider";
 
 import type { Metadata } from "next";
 import "./globals.css";
@@ -18,16 +21,23 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<ReactQueryClientProvider>
-			<ClerkProvider>
-				<Analytics />
-				<html lang="en">
-					<body>
-						<Header />
-						<main>{children}</main>
-					</body>
-				</html>
-			</ClerkProvider>
-		</ReactQueryClientProvider>
+		<ClerkProvider>
+			<Analytics />
+			<html lang="en">
+				<body>
+					<ClerkLoading>
+						<Loader />
+					</ClerkLoading>
+					<ClerkLoaded>
+						<ReactQueryClientProvider>
+							<ToastProvider>
+								<Header />
+								<main>{children}</main>
+							</ToastProvider>
+						</ReactQueryClientProvider>
+					</ClerkLoaded>
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

@@ -1,14 +1,16 @@
 "use client";
-import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/clerk-react";
+import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 async function getUsers() {
 	const res = await axios.get(`${BASE_URL}/users`);
 	return res.data;
 }
+
 async function postResume({ clerkId, resume }: { clerkId: string; resume: string }) {
 	const res = await axios.post(`${BASE_URL}/resume`, { clerkId, resume });
 	return res.data;
@@ -20,15 +22,14 @@ function ResumeForm() {
 	const { mutate } = useMutation({
 		mutationFn: postResume,
 		onSuccess: () => {
-			alert("resume was posted successfully");
+			toast.success("resume was posted successfully");
 		},
 		onError: () => {
-			alert("failed to post resume");
+			toast.error("failed to post resume");
 		},
 	});
-	if (!isLoaded) return <p>Loading...</p>;
 
-	
+	if (!isLoaded) return <p>Loading...</p>;
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
