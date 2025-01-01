@@ -44,7 +44,7 @@ export default function Resume() {
 		if (user && user.resume) {
 			setResume(user.resume);
 		}
-	}, [isSuccess]);
+	}, [isSuccess,user]);
 
 	if (!isLoaded) return <p>Loading...</p>;
 
