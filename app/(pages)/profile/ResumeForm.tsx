@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { BASE_URL } from "@/app/constants";
+import { BASE_URL } from "@/constants";
 import { toast } from "react-toastify";
 import Button from "@/app/component/ui/Button";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function postResume({ clerkId, resume }: { clerkId: string; resume: string }) {
 	const res = await axios.post(`${BASE_URL}/resume`, { clerkId, resume });
@@ -15,11 +16,13 @@ async function postResume({ clerkId, resume }: { clerkId: string; resume: string
 function ResumeForm() {
 	const [resume, setResume] = useState("");
 	const { userId: clerkId, isLoaded } = useAuth();
+	const queryClient = useQueryClient();
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: postResume,
 		onSuccess: () => {
 			toast.success("Resume was saved successfully");
+			queryClient.invalidateQueries({ queryKey: ["users", clerkId] });
 		},
 		onError: () => {
 			toast.error("Failed to save resume");
@@ -32,11 +35,15 @@ function ResumeForm() {
 		e.preventDefault();
 		if (clerkId && resume) {
 			mutate({ clerkId, resume });
+			setResume("");
 		}
 	}
 
 	return (
 		<form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
+			<h2 className="text-2xl">
+				You need to add your cv to start using HireableJS amazing tools
+			</h2>
 			<textarea
 				required
 				cols={60}
