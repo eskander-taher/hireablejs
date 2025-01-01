@@ -24,7 +24,7 @@ export default async function RootLayout({
 		<ClerkProvider>
 			<Analytics />
 			<html lang="en">
-				<body>
+				<body className="bg-black text-white">
 					<ClerkLoading>
 						<Loader />
 					</ClerkLoading>
