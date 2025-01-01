@@ -6,7 +6,6 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { BASE_URL } from "@/constants";
 import Loader from "@/app/components/Loader";
-import CustomCoverLetter from "./CustomCoverLetter";
 
 async function getUser(userId: string) {
 	const res = await axios.get(`${BASE_URL}/users/${userId}`);
@@ -42,7 +41,6 @@ export default function Profile() {
 					Right now the tools are being developed, whenever a new tool is launched you
 					will be the first to know about.
 				</p>
-				<CustomCoverLetter />
 			</div>
 		);
 	}

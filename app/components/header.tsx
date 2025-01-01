@@ -37,7 +37,8 @@ export default function Header() {
 				<SignUpButton />
 			</SignedOut>
 			<SignedIn>
-				{showResumeLink && <Link href="/my-resume">My Resume</Link>}
+				{showResumeLink && <Link href="/resumes">Resumes</Link>}
+				{showResumeLink && <Link href="/coverletters">Coverletters</Link>}
 				<Link href="/dashboard">Dashboard</Link>
 			</SignedIn>
 			<UserButton />
