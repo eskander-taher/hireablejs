@@ -1,11 +1,11 @@
 "use client";
-import ProtectContent from "@/app/component/ProtectContent";
+import ProtectContent from "@/app/components/ProtectContent";
 import ResumeForm from "./ResumeForm";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { BASE_URL } from "@/constants";
-import Loader from "@/app/component/Loader";
+import Loader from "@/app/components/Loader";
 
 async function getUser(userId: string) {
 	const res = await axios.get(`${BASE_URL}/users/${userId}`);

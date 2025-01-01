@@ -3,7 +3,7 @@ import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "@/constants";
-import Button from "./component/ui/Button";
+import Button from "./components/ui/Button";
 
 async function getUsers() {
 	const res = await axios.get(`${BASE_URL}/users`);

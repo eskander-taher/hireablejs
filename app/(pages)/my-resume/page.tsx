@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "@/constants";
 import { toast } from "react-toastify";
-import Button from "@/app/component/ui/Button";
+import Button from "@/app/components/ui/Button";
 import { useQueryClient } from "@tanstack/react-query";
 
 async function postResume({ userId, resume }: { userId: string; resume: string }) {

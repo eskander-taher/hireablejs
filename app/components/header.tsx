@@ -33,7 +33,7 @@ export default function Header() {
 			<SignedIn>
 				<Link href="/">Home</Link>
 				{showResumeLink && <Link href="/my-resume">My Resume</Link>}
-				<Link href="/profile">Profile</Link>
+				<Link href="/dashboard">Dashboard</Link>
 				<UserButton />
 			</SignedIn>
 		</header>
