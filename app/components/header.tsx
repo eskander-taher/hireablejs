@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { BASE_URL } from "@/constants";
 import { useEffect, useState } from "react";
+import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
 
 async function getUser(userId: string) {
 	const res = await axios.get(`${BASE_URL}/users/${userId}`);
@@ -30,12 +31,16 @@ export default function Header() {
 
 	return (
 		<header className="absolute w-full bg-slate-900 flex justify-end items-center gap-10 px-10 py-4">
+			<Link href="/">Home</Link>
+			<SignedOut>
+				<SignInButton />
+				<SignUpButton />
+			</SignedOut>
 			<SignedIn>
-				<Link href="/">Home</Link>
 				{showResumeLink && <Link href="/my-resume">My Resume</Link>}
 				<Link href="/dashboard">Dashboard</Link>
-				<UserButton />
 			</SignedIn>
+			<UserButton />
 		</header>
 	);
 }
