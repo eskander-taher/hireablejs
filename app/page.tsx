@@ -1,5 +1,5 @@
 "use client";
-import { SignedOut, SignedIn, SignInButton, useUser, useAuth } from "@clerk/nextjs";
+import { SignedOut, SignedIn, SignInButton, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
@@ -17,20 +17,6 @@ export default function Home() {
 		queryFn: getUsers,
 	});
 
-	// const { getToken, userId } = useAuth();
-	// const { data: profile, isSuccess: profileSuccess } = useQuery({
-	// 	queryKey: ["profile"],
-	// 	queryFn: async () => {
-	// 		const token = await getToken();
-	// 		const url = `${BASE_URL}/profile/${userId}`;
-	// 		const res = await axios.get(url, {
-	// 			headers: { Authorization: `Bearer ${token}` },
-	// 		});
-	// 		return res.data;
-	// 	},
-	// 	enabled: !!userId,
-	// });
-
 	return (
 		<div className="flex flex-col justify-center items-center h-screen">
 			<h1 className=" text-6xl">HireableJS</h1>
@@ -46,7 +32,10 @@ export default function Home() {
 				</h1>
 				<p>You have joind the waiting list successfully</p>
 				{isSuccess && (
-					<p>{`Until now ${users.length} JavaScript developers have joined the community`}</p>
+					<p>
+						Until now <span className=" font-bold text-xl">{users.length}</span> JavaScript developers have joined the
+						community
+					</p>
 				)}
 				<p>You will be notified in the near future when the website is launched</p>
 			</SignedIn>

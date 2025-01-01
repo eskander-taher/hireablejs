@@ -14,13 +14,14 @@ async function postResume({ clerkId, resume }: { clerkId: string; resume: string
 function ResumeForm() {
 	const [resume, setResume] = useState("");
 	const { userId: clerkId, isLoaded } = useAuth();
+
 	const { mutate } = useMutation({
 		mutationFn: postResume,
 		onSuccess: () => {
-			toast.success("resume was posted successfully");
+			toast.success("Resume was saved successfully");
 		},
 		onError: () => {
-			toast.error("failed to post resume");
+			toast.error("Failed to save resume");
 		},
 	});
 
@@ -28,20 +29,21 @@ function ResumeForm() {
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		if (clerkId) {
+		if (clerkId && resume) {
 			mutate({ clerkId, resume });
 		}
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h1>Copy paste your resume here</h1>
+		<form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
 			<textarea
-				className="text-black"
+				cols={60}
+				placeholder="Copy paste your resume here"
+				className="text-black p-2"
 				value={resume}
 				onChange={(e) => setResume(e.target.value)}
 			/>
-			<input type="submit" />
+			<button type="submit">Save resume</button>
 		</form>
 	);
 }
