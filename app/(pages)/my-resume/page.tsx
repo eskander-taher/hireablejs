@@ -56,14 +56,15 @@ export default function Resume() {
 	}
 
 	return (
-		<div className="h-screen w-full flex flex-col justify-center items-center">
-			<form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
+		<div>
+			<form
+				className="h-screen w-full flex flex-col justify-center items-center gap-5"
+				onSubmit={handleSubmit}
+			>
 				<textarea
 					required
-					cols={60}
-					rows={20}
 					placeholder="Copy paste your resume here"
-					className="text-black p-2"
+					className="text-black p-2 w-full md:w-1/2"
 					value={resume}
 					onChange={(e) => setResume(e.target.value)}
 				/>

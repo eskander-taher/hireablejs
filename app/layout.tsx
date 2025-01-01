@@ -10,7 +10,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
 	title: "HireableJS",
-	description: "A zone for all despreate JavaScript developers",
+	description: "The zone for all despreate JavaScript developers",
 };
 
 export default async function RootLayout({

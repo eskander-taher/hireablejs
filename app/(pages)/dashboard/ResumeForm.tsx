@@ -40,15 +40,14 @@ function ResumeForm() {
 	}
 
 	return (
-		<form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
+		<form className="flex flex-col items-center gap-5 w-full" onSubmit={handleSubmit}>
 			<h2 className="text-2xl">
 				You need to add your cv to start using HireableJS amazing tools
 			</h2>
 			<textarea
 				required
-				cols={60}
 				placeholder="Copy paste your resume here"
-				className="text-black p-2"
+				className="text-black p-2 w-full md:w-1/2"
 				value={resume}
 				onChange={(e) => setResume(e.target.value)}
 			/>

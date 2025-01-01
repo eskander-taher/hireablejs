@@ -37,7 +37,7 @@ export default function Profile() {
 	function Tools() {
 		return (
 			<div className="flex flex-col justify-center items-center">
-				<h1>Strat using the tools.</h1>
+				<h1>Start using the tools.</h1>
 				<p>
 					Right now the tools are being developed, whenever a new tool is launched you
 					will be the first to know about.
@@ -48,22 +48,8 @@ export default function Profile() {
 	}
 
 	return (
-		<div className="h-screen flex flex-col justify-center items-center">
+		<div className="h-screen flex flex-col justify-center items-center p-5">
 			<ProtectContent>{!user?.resume ? <ResumeForm /> : <Tools />}</ProtectContent>
 		</div>
 	);
 }
-
-// const { getToken, userId } = useAuth();
-// const { data: profile, isSuccess: profileSuccess } = useQuery({
-// 	queryKey: ["profile"],
-// 	queryFn: async () => {
-// 		const token = await getToken();
-// 		const url = `${BASE_URL}/profile/${userId}`;
-// 		const res = await axios.get(url, {
-// 			headers: { Authorization: `Bearer ${token}` },
-// 		});
-// 		return res.data;
-// 	},
-// 	enabled: !!userId,
-// });
