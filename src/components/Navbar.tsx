@@ -152,6 +152,16 @@ const Navbar: React.FC = () => {
 							Resume
 						</Link>
 					) : null}
+					{user ? (
+						<Link
+							to="/coverletters"
+							className={`block px-3 py-2 rounded-md text-base font-medium hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 ${isActive(
+								"/coverletters"
+							)}`}
+						>
+							Cover Letters
+						</Link>
+					) : null}
 					{!user ? (
 						<Link
 							to="/signin"
