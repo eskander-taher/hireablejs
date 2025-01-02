@@ -31,7 +31,7 @@ export default function Home() {
 		<div className="flex flex-col justify-center items-center h-screen p-6 bg-gray-100 dark:bg-gray-900 dark:text-white">
 			<h1 className="text-6xl dark:text-white mb-4">HireableJS</h1>
 			<h2 className="text-2xl dark:text-gray-300 mb-2">
-				The zone for all desperate JavaScript developers.
+				The zone for all desperate JavaScript developers over the world!.
 			</h2>
 			<p className="dark:text-gray-400 mb-6">
 				All the tools you need to land your first JS job ASAP in one place.
