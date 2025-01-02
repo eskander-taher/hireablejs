@@ -34,7 +34,9 @@ export default function CoverLetters() {
 		},
 	});
 
-	function handleSubmit() {
+	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+
 		const getCoverLetterPrompt = `
       Given the following CV: ${user?.resume}, please write a customized cover letter for the job description provided: ${prompt}.
 
@@ -61,7 +63,10 @@ export default function CoverLetters() {
 
 	return (
 		<div className="pt-20 flex flex-col justify-center items-center min-h-screen p-6 bg-gray-100 dark:bg-gray-900 dark:text-white">
-			<div className="max-w-2xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
+			<form
+				onSubmit={handleSubmit}
+				className="max-w-2xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8"
+			>
 				<h2 className="text-2xl font-bold mb-4 text-center">
 					Customized Cover Letter Generator
 				</h2>
@@ -70,6 +75,8 @@ export default function CoverLetters() {
 					approximately 20-30% compared to a generic cover letter.
 				</p>
 				<textarea
+					required
+					minLength={200}
 					className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
 					rows={10}
 					value={prompt}
@@ -78,7 +85,7 @@ export default function CoverLetters() {
 				/>
 				<Button
 					isLoading={isPending}
-					onClick={handleSubmit}
+					type="submit"
 					text="Generate Cover Letter"
 					className="w-full py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:text-white dark:focus:ring-blue-400"
 				/>
@@ -94,7 +101,7 @@ export default function CoverLetters() {
 						<p className="text-lg">{coverletter}</p>
 					</div>
 				)}
-			</div>
+			</form>
 		</div>
 	);
 }
