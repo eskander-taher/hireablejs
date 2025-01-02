@@ -49,6 +49,7 @@ function ResumeForm() {
 			</h2>
 			<textarea
 				required
+				minLength={200}
 				placeholder="Copy and paste your resume here"
 				className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
 				rows={10}
