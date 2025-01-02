@@ -9,7 +9,7 @@ function ResumeForm() {
 	const { user, setUser } = useUser();
 	const [resume, setResume] = useState("");
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: async (resume: string) => {
 			const res = await myAxios.put(`/users/${user?.id}`, { resume });
 			return res.data;
@@ -50,11 +50,13 @@ function ResumeForm() {
 			<textarea
 				required
 				placeholder="Copy and paste your resume here"
-				className="text-black dark:text-white p-4 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-400"
+				className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
+				rows={10}
 				value={resume}
 				onChange={(e) => setResume(e.target.value)}
 			/>
 			<Button
+				isLoading={isPending}
 				type="submit"
 				text="Save Resume"
 				className="w-full py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:text-white dark:focus:ring-blue-400"
