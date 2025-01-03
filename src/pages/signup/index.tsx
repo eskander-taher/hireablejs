@@ -23,13 +23,13 @@ export default function Signup() {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (data: IFormInput) => {
-			const res = await myAxios.post("/sign-up", data);
+			const res = await myAxios.post("/users", data);
 			return res.data;
 		},
 		onSuccess: () => {
 			toast.success("Sign up successful, you can now sign in now");
 			reset();
-			navigate("/signin");
+			navigate("/signin"); 
 		},
 		onError: (error) => {
 			console.log(error);

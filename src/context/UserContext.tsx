@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
 	id: string;
 	username: string;
-	token: string;
 	resume: string;
+	token: string;
 }
 
 interface UserContextType {

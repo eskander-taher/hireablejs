@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import Button from "../../components/Button";
 import { useUser } from "../../context/UserContext";
+
+import Button from "../../components/Button";
 import { useMutation } from "@tanstack/react-query";
 import { myAxios } from "../../constants";
 import { toast } from "react-toastify";
 
 function ResumeForm() {
 	const { user, setUser } = useUser();
+
 	const [resume, setResume] = useState("");
 
 	const { mutate, isPending } = useMutation({

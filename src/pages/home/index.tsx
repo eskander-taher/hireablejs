@@ -46,7 +46,7 @@ export default function Home() {
 					className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
 					required
 				/>
-				<Button isLoading={isPending} type="submit" text="Join the Community" />
+				<Button isLoading={isPending} type="submit" text="Join the News letter" />
 			</form>
 		</div>
 	);
