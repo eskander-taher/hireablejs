@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
-import Resume from "../pages/resume";
+import CV from "../pages/CV";
 import Signup from "../pages/signup";
 import Signin from "../pages/signin";
 import NotFound from "../pages/notfound";
@@ -14,7 +14,7 @@ const AppRoutes: React.FC = () => {
 			<Navbar />
 			<Routes>
 				<Route path="/" element={<Home />} />
-				<Route path="/resume" element={<Resume />} />
+				<Route path="/CV" element={<CV />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/signin" element={<Signin />} />
 				<Route path="/coverletters" element={<CoverLetters />} />

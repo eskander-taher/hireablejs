@@ -6,6 +6,7 @@ import ReactQueryClientProvider from "./components/ReactQueryClientProvider.tsx"
 import ToastProvider from "./components/ToastProvider.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
+import { Analytics } from "@vercel/analytics/react";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
 			<UserProvider>
 				<ReactQueryClientProvider>
 					<ToastProvider>
+						<Analytics />
 						<App />
 					</ToastProvider>
 				</ReactQueryClientProvider>

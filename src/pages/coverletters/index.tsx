@@ -7,29 +7,19 @@ import { FaRegCopy } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 export default function CoverLetters() {
-	const [prompt, setPrompt] = useState("");
+	const [jobDesc, setJobDesc] = useState("");
 	const [coverletter, setCoverletter] = useState("");
-	const [companyName, setCompanyName] = useState("");
 	const { user } = useUser();
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: async ({
-			getCoverLetterPrompt,
-			getCompanyNamePrompt,
-		}: {
-			getCoverLetterPrompt: string;
-			getCompanyNamePrompt: string;
-		}) => {
-			const coverLetter = await useLLM(getCoverLetterPrompt);
-			const companyName = await useLLM(getCompanyNamePrompt);
-			return [coverLetter, companyName] as string[];
+		mutationFn: async ({ coverLetterPrompt }: { coverLetterPrompt: string }) => {
+			const coverLetter = await useLLM(coverLetterPrompt);
+			return coverLetter as string;
 		},
 		onSuccess: (data) => {
-			setCompanyName(data[1]);
-			setCoverletter(data[0]);
+			setCoverletter(data);
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
 			alert("Error generating cover letter.");
 		},
 	});
@@ -37,16 +27,10 @@ export default function CoverLetters() {
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		const getCoverLetterPrompt = `
-      Given the following CV: ${user?.resume}, please write a customized cover letter for the job description provided: ${prompt}.
-
-      Do not write contacts and those stuff at the end, start directly from the cover letter content. Do not use markup; return the response as a plain string.
-    `;
-		const getCompanyNamePrompt = `
-      Given the following job description: ${prompt}, return only the name of the company. If you could not, return "unknown". Do not write any additional text.
-    `;
-
-		mutate({ getCoverLetterPrompt, getCompanyNamePrompt });
+		if (user?.CV) {
+			const coverLetterPrompt = generateCoverLetterPrompt(user?.CV, jobDesc);
+			mutate({ coverLetterPrompt });
+		}
 	}
 
 	const handleCopy = () => {
@@ -79,8 +63,8 @@ export default function CoverLetters() {
 					minLength={200}
 					className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
 					rows={10}
-					value={prompt}
-					onChange={(e) => setPrompt(e.target.value)}
+					value={jobDesc}
+					onChange={(e) => setJobDesc(e.target.value)}
 					placeholder="Copy and paste job description here..."
 				/>
 				<Button
@@ -89,7 +73,6 @@ export default function CoverLetters() {
 					text="Generate Cover Letter"
 					className="w-full py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:text-white dark:focus:ring-blue-400"
 				/>
-				{companyName && <h2 className="text-3xl font-semibold mt-6">{companyName}</h2>}
 				{coverletter && (
 					<div className="relative mt-4 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg">
 						<button
@@ -104,4 +87,26 @@ export default function CoverLetters() {
 			</form>
 		</div>
 	);
+}
+
+function generateCoverLetterPrompt(cv: string, jobDesc: string) {
+	return `
+			You are an expert in crafting professional cover letters tailored to specific job descriptions. Your task is to generate a compelling cover letter based on the provided CV and job description. 
+	
+			**Instructions:**
+	
+			1. **Analyze the CV**: Extract key skills, experiences, and qualifications that align with the job description.
+			2. **Review the Job Description**: Identify the main responsibilities, required skills, and company values.
+			3. **Craft the Cover Letter**:
+			- Start with a strong opening that states the position being applied for and expresses enthusiasm.
+			- Highlight relevant experiences and skills from the CV that match the job requirements.
+			- Emphasize how the applicant’s background aligns with the company’s values and goals.
+			- Conclude with a call to action, expressing a desire for an interview and thanking the employer for their consideration.
+	
+			**CV**: [${cv}]
+	
+			**Job Description**: [${jobDesc}]
+	
+			**Output**: Please format the cover letter in a professional manner, including a greeting, body paragraphs, and a closing statement.
+		`;
 }

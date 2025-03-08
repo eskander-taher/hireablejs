@@ -51,15 +51,15 @@ const Navbar: React.FC = () => {
 							</Link>
 							{user ? (
 								<Link
-									to="/resume"
+									to="/CV"
 									className={`hover:text-gray-600 dark:hover:text-gray-400 ${isActive(
-										"/resume"
+										"/CV"
 									)}`}
 								>
-									Resume
+									CV
 								</Link>
 							) : null}
-							{user?.resume ? (
+							{user?.CV ? (
 								<Link
 									to="/coverletters"
 									className={`hover:text-gray-600 dark:hover:text-gray-400 ${isActive(
@@ -144,12 +144,12 @@ const Navbar: React.FC = () => {
 					</Link>
 					{user ? (
 						<Link
-							to="/resume"
+							to="/CV"
 							className={`block px-3 py-2 rounded-md text-base font-medium hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 ${isActive(
-								"/resume"
+								"/CV"
 							)}`}
 						>
-							Resume
+							CV
 						</Link>
 					) : null}
 					{user ? (

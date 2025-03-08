@@ -29,7 +29,7 @@ export default function Signin() {
 		onSuccess: (data) => {
 			setUser(data.user);
 			reset();
-			navigate("/resume");
+			navigate("/CV");
 		},
 		onError: (error) => {
 			console.log(error);

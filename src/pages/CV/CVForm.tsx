@@ -6,37 +6,37 @@ import { useMutation } from "@tanstack/react-query";
 import { myAxios } from "../../constants";
 import { toast } from "react-toastify";
 
-function ResumeForm() {
+function CVForm() {
 	const { user, setUser } = useUser();
 
-	const [resume, setResume] = useState("");
+	const [CV, setCV] = useState("");
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: async (resume: string) => {
-			const res = await myAxios.put(`/users/${user?.id}`, { resume });
+		mutationFn: async (CV: string) => {
+			const res = await myAxios.put(`/users/${user?.id}`, { CV });
 			return res.data;
 		},
 		onSuccess: (data) => {
 			if (user) {
-				setUser({ ...user, resume: data.user.resume });
+				setUser({ ...user, CV: data.user.CV });
 			}
-			toast.success("Resume was saved successfully.");
+			toast.success("CV was saved successfully.");
 		},
 		onError: (error) => {
 			console.log(error);
-			toast.error("Failed to save resume.");
+			toast.error("Failed to save CV.");
 		},
 	});
 
 	useEffect(() => {
-		if (user?.resume) {
-			setResume(user.resume);
+		if (user?.CV) {
+			setCV(user.CV);
 		}
 	}, [user]);
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		mutate(resume);
+		mutate(CV);
 	}
 
 	return (
@@ -45,27 +45,27 @@ function ResumeForm() {
 			onSubmit={handleSubmit}
 		>
 			<h2 className="text-2xl font-bold text-center text-black dark:text-white">
-				{user?.resume
-					? "You can edit your resume anytime"
+				{user?.CV
+					? "You can edit your CV anytime"
 					: "You need to add your CV to start using HireableJS amazing tools"}
 			</h2>
 			<textarea
 				required
 				minLength={200}
-				placeholder="Copy and paste your resume here"
+				placeholder="Copy and paste your CV here"
 				className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-black dark:text-white dark:bg-gray-700"
 				rows={10}
-				value={resume}
-				onChange={(e) => setResume(e.target.value)}
+				value={CV}
+				onChange={(e) => setCV(e.target.value)}
 			/>
 			<Button
 				isLoading={isPending}
 				type="submit"
-				text="Save Resume"
+				text="Save CV"
 				className="w-full py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:text-white dark:focus:ring-blue-400"
 			/>
 		</form>
 	);
 }
 
-export default ResumeForm;
+export default CVForm;
