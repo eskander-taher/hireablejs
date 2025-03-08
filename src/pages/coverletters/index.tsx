@@ -29,6 +29,7 @@ export default function CoverLetters() {
 
 		if (user?.CV) {
 			const coverLetterPrompt = generateCoverLetterPrompt(user?.CV, jobDesc);
+
 			mutate({ coverLetterPrompt });
 		}
 	}
@@ -91,22 +92,29 @@ export default function CoverLetters() {
 
 function generateCoverLetterPrompt(cv: string, jobDesc: string) {
 	return `
-			You are an expert in crafting professional cover letters tailored to specific job descriptions. Your task is to generate a compelling cover letter based on the provided CV and job description. 
-	
+			**Language Requirement**: The cover letter must be written in the same language as the job description.
+
+			You are an expert in crafting professional cover letters tailored to specific job descriptions. Your task is to generate a compelling cover letter based on the provided CV and job description.
+
 			**Instructions:**
-	
+
 			1. **Analyze the CV**: Extract key skills, experiences, and qualifications that align with the job description.
-			2. **Review the Job Description**: Identify the main responsibilities, required skills, and company values.
+			2. **Review the Job Description**: Identify the main responsibilities, required skills, and company values. Note the language used in the job description.
 			3. **Craft the Cover Letter**:
 			- Start with a strong opening that states the position being applied for and expresses enthusiasm.
 			- Highlight relevant experiences and skills from the CV that match the job requirements.
 			- Emphasize how the applicant’s background aligns with the company’s values and goals.
 			- Conclude with a call to action, expressing a desire for an interview and thanking the employer for their consideration.
-	
+
+			**Important Note**: Do not include placeholder brackets (e.g., [Name], [Company Name]) in the cover letter. If specific information is not provided in the CV or job description, simply omit those details.
+
+			**Language Requirement**: The cover letter must be written in the same language as the job description.
+
 			**CV**: [${cv}]
-	
+
 			**Job Description**: [${jobDesc}]
-	
+
 			**Output**: Please format the cover letter in a professional manner, including a greeting, body paragraphs, and a closing statement.
+
 		`;
 }
