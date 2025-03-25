@@ -1,20 +1,20 @@
-"use server"
-
-import { mistral } from "@ai-sdk/mistral"
-import { generateText } from "ai"
-
+"use server";
+import { Mistral } from "@mistralai/mistralai";
 import dotenv from "dotenv";
+
 dotenv.config();
 
+const apiKey = process.env.API_KEY;
+const client = new Mistral({ apiKey });
 
 export async function generateCoverLetterWithAI(
-  cvData: any,
-  jobDescription: string,
-  companyName: string,
-  jobTitle: string,
+	cvData: any,
+	jobDescription: string,
+	companyName: string,
+	jobTitle: string
 ) {
-  try {
-    const prompt = `
+	try {
+		const prompt = `
 You are a professional career coach and expert resume writer. Create a highly personalized, compelling cover letter based on the following information:
 
 CV DATA:
@@ -30,32 +30,39 @@ Summary: ${cvData.summary}
 
 Experience: 
 ${cvData.experience
-  .map(
-    (exp: any) =>
-      `- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate}) | ${exp.location}
-   ${exp.description}`,
-  )
-  .join("\n")}
+	.map(
+		(exp: any) =>
+			`- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate}) | ${exp.location}
+   ${exp.description}`
+	)
+	.join("\n")}
 
 Education:
 ${cvData.education
-  .map((edu: any) => `- ${edu.degree} from ${edu.institution} (${edu.year})${edu.gpa ? ` - GPA: ${edu.gpa}` : ""}`)
-  .join("\n")}
+	.map(
+		(edu: any) =>
+			`- ${edu.degree} from ${edu.institution} (${edu.year})${
+				edu.gpa ? ` - GPA: ${edu.gpa}` : ""
+			}`
+	)
+	.join("\n")}
 
 Projects:
 ${cvData.projects
-  .map(
-    (proj: any) =>
-      `- ${proj.name}${proj.link ? ` (${proj.link})` : ""}
-   ${proj.description}`,
-  )
-  .join("\n")}
+	.map(
+		(proj: any) =>
+			`- ${proj.name}${proj.link ? ` (${proj.link})` : ""}
+   ${proj.description}`
+	)
+	.join("\n")}
 
 Skills:
 ${cvData.skillCategories.map((cat: any) => `- ${cat.category}: ${cat.skills}`).join("\n")}
 
 Certifications:
-${cvData.certifications.map((cert: any) => `- ${cert.name} - ${cert.issuer} (${cert.year})`).join("\n")}
+${cvData.certifications
+	.map((cert: any) => `- ${cert.name} - ${cert.issuer} (${cert.year})`)
+	.join("\n")}
 
 Languages:
 ${cvData.languages.map((lang: any) => `- ${lang.language} - ${lang.proficiency}`).join("\n")}
@@ -83,27 +90,34 @@ IMPORTANT FORMATTING INSTRUCTIONS:
 3. The letter should be concise (250-350 words) and compelling
 4. The letter should be ready to send without further editing
 5. DO NOT include any placeholders or fields to be filled in later - use the actual data provided
-`
+`;
 
-    const { text } = await generateText({
-      model: mistral("mistral-large-latest"),
-      prompt,
-      maxTokens: 1500,
-    })
+		const chatResponse = await client.chat.complete({
+			model: "mistral-large-latest",
+			messages: [{ role: "user", content: prompt }],
+		});
 
-    return { success: true, content: text }
-  } catch (error) {
-    console.error("Error generating cover letter:", error)
-    return {
-      success: false,
-      content: "Failed to generate cover letter. Please try again later.",
-    }
-  }
+		// Check if choices is defined and has at least one choice
+		if (chatResponse.choices && chatResponse.choices.length > 0) {
+			return { success: true, content: chatResponse.choices[0].message.content };
+		} else {
+			return {
+				success: false,
+				content: "No response from the model. Please try again later.",
+			};
+		}
+	} catch (error) {
+		console.error("Error generating cover letter:", error);
+		return {
+			success: false,
+			content: "Failed to generate cover letter. Please try again later.",
+		};
+	}
 }
 
 export async function generateCVWithAI(cvData: any, companyDescription = "") {
-  try {
-    const prompt = `
+	try {
+		const prompt = `
 You are a professional CV writer with 15+ years of experience creating high-impact, ATS-optimized CVs for job seekers. Your task is to create an exceptional CV based on the provided information, specifically tailored to match the target company.
 
 CV DATA:
@@ -119,32 +133,39 @@ Summary: ${cvData.summary}
 
 Experience: 
 ${cvData.experience
-  .map(
-    (exp: any) =>
-      `- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate}) | ${exp.location}
-   ${exp.description}`,
-  )
-  .join("\n")}
+	.map(
+		(exp: any) =>
+			`- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate}) | ${exp.location}
+   ${exp.description}`
+	)
+	.join("\n")}
 
 Education:
 ${cvData.education
-  .map((edu: any) => `- ${edu.degree} from ${edu.institution} (${edu.year})${edu.gpa ? ` - GPA: ${edu.gpa}` : ""}`)
-  .join("\n")}
+	.map(
+		(edu: any) =>
+			`- ${edu.degree} from ${edu.institution} (${edu.year})${
+				edu.gpa ? ` - GPA: ${edu.gpa}` : ""
+			}`
+	)
+	.join("\n")}
 
 Projects:
 ${cvData.projects
-  .map(
-    (proj: any) =>
-      `- ${proj.name}${proj.link ? ` (${proj.link})` : ""}
-   ${proj.description}`,
-  )
-  .join("\n")}
+	.map(
+		(proj: any) =>
+			`- ${proj.name}${proj.link ? ` (${proj.link})` : ""}
+   ${proj.description}`
+	)
+	.join("\n")}
 
 Skills:
 ${cvData.skillCategories.map((cat: any) => `- ${cat.category}: ${cat.skills}`).join("\n")}
 
 Certifications:
-${cvData.certifications.map((cert: any) => `- ${cert.name} - ${cert.issuer} (${cert.year})`).join("\n")}
+${cvData.certifications
+	.map((cert: any) => `- ${cert.name} - ${cert.issuer} (${cert.year})`)
+	.join("\n")}
 
 Languages:
 ${cvData.languages.map((lang: any) => `- ${lang.language} - ${lang.proficiency}`).join("\n")}
@@ -170,21 +191,27 @@ FORMAT:
 - Include appropriate spacing and formatting for readability
 
 The final CV should be a complete, ready-to-use document that will significantly increase the candidate's chances of getting an interview.
-`
+`;
 
-    const { text } = await generateText({
-      model: mistral("mistral-large-latest"),
-      prompt,
-      maxTokens: 2000,
-    })
+		const chatResponse = await client.chat.complete({
+			model: "mistral-large-latest",
+			messages: [{ role: "user", content: prompt }],
+		});
 
-    return { success: true, content: text }
-  } catch (error) {
-    console.error("Error generating CV:", error)
-    return {
-      success: false,
-      content: "Failed to generate CV. Please try again later.",
-    }
-  }
+		// Check if choices is defined and has at least one choice
+		if (chatResponse.choices && chatResponse.choices.length > 0) {
+			return { success: true, content: chatResponse.choices[0].message.content };
+		} else {
+			return {
+				success: false,
+				content: "No response from the model. Please try again later.",
+			};
+		}
+	} catch (error) {
+		console.error("Error generating CV:", error);
+		return {
+			success: false,
+			content: "Failed to generate CV. Please try again later.",
+		};
+	}
 }
-
