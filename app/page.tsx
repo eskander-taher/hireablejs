@@ -15,9 +15,9 @@ export default function Home() {
             </h1>
             <div className="flex items-center gap-3">
               <ThemeToggle />
-              <Button asChild variant="ghost" className="font-medium">
+              {/* <Button asChild variant="ghost" className="font-medium">
                 <Link href="/app">Sign In</Link>
-              </Button>
+              </Button> */}
               <Button
                 asChild
                 className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700 text-white"
