@@ -11,7 +11,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Hireable<span className="text-orange-500">JS</span>
+              H<span className="text-orange-500">JS</span>
             </h1>
             <div className="flex items-center gap-3">
               <ThemeToggle />
